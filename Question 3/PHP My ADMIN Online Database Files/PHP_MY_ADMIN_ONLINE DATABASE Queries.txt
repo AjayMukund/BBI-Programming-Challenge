@@ -1,0 +1,39 @@
+Answer Query 1:
+
+SELECT visit_date
+FROM Visits
+GROUP BY visit_date
+HAVING count(*) =
+(select count(*) 
+ from Visits 
+ group by visit_date 
+ order by count(*) desc LIMIT 1)
+
+Anwer Query 2: 
+
+select sum(amount) as Max_Amount, transaction_date
+from Transactions 
+group by transaction_date
+order by sum(amount) desc LIMIT 1 
+
+Answer Query 3:
+
+select sum(amount) as Max_Amount, user_id
+from Transactions 
+group by user_id
+order by sum(amount) desc LIMIT 1
+
+Answer Query 4:
+
+select avg(Max_Amount) as Average_Transaction_Per_Day from (select sum(amount) as Max_Amount
+from Transactions 
+group by transaction_date
+order by sum(amount)) AS sub
+
+Answer Query 5:
+
+select Visits.user_id, visit_date
+from Visits 
+LEFT JOIN Transactions
+ON Visits.visit_date = Transactions.transaction_date and Visits.user_id = Transactions.user_id
+WHERE Transactions.transaction_date IS NULL

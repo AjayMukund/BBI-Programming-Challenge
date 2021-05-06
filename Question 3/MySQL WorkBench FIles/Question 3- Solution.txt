@@ -1,0 +1,42 @@
+use question3_challenge;
+
+Answer Query 1:
+
+SELECT visit_date
+FROM visits
+GROUP BY visit_date
+HAVING count(*) = 
+-- count of most visit dates
+(select count(*) 
+ from visits 
+ group by visit_date 
+ order by count(*) desc LIMIT 1)
+
+Anwer Query 2: 
+
+select sum(amount) as Max_Amount, transaction_date
+from transactions 
+group by transaction_date
+order by sum(amount) desc LIMIT 1 
+
+Answer Query 3:
+
+select sum(amount) as Max_Amount, user_id
+from transactions 
+group by user_id
+order by sum(amount) desc LIMIT 1
+
+Answer Query 4:
+
+select avg(Max_Amount) as Average_Transaction_Per_Day from (select sum(amount) as Max_Amount
+from transactions 
+group by transaction_date
+order by sum(amount)) AS sub
+
+Answer Query 5:
+
+select visits.user_id, visit_date
+from visits 
+LEFT JOIN transactions
+ON visits.visit_date = transactions.transaction_date and visits.user_id = transactions.user_id
+WHERE transactions.transaction_date IS NULL
